@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../template.xhtml">
+
+            <ui:define name="content">
+                
+                <h:form >
+                    
+                    <p:panelGrid columns="1" style="width: 100%;" >
+                        <f:facet name="header" >
+                            <p:outputLabel value="Case Study" ></p:outputLabel>
+                        </f:facet>
+                        
+                        <p:panelGrid columns="3" >
+                            <p:outputLabel value="Name" ></p:outputLabel>
+                            <p:spacer height="1" width="20"></p:spacer>
+                            <p:inputText value="#{messageController.selected.name}" ></p:inputText>
+                            
+                            <p:outputLabel value="Solution" ></p:outputLabel>
+                            <p:spacer height="1" width="20"></p:spacer>
+                            <p:autoComplete value="#{messageController.selected.solution}"
+                                            completeMethod="#{solutionController.completeSolution}"
+                                            var="s"
+                                            itemLabel="#{s.name}"
+                                            itemValue="#{s}">
+                            </p:autoComplete>
+                            
+                            <p:commandButton ajax="false" value="Save" action="#{messageController.saveSelected()}" >
+                            </p:commandButton>
+                            <p:commandButton ajax="false" value="View" actionListener="#{messageController.saveSelected()}" action="#{messageController.toViewCaseStudyForPublic()}" >
+                            </p:commandButton>
+                            <p:commandButton ajax="false" value="Back" action="#{messageController.toViewCaseStudiesForUsers()}" >
+                            </p:commandButton>
+                            
+                        </p:panelGrid>
+                        
+                        
+                        <p:editor value="#{messageController.selected.rtfText}" height="800" width="1200" ></p:editor>
+                        
+                        
+                    </p:panelGrid>
+                    
+                </h:form>
+                
+                
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

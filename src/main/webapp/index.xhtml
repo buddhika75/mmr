@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <h:body>
+
+        <ui:composition template="./template.xhtml">
+
+
+
+            <ui:define name="content">
+
+                <div class="w3-row w3-theme-l5" style="height: 100%;" >
+                    <h:panelGroup rendered="#{webUserController.loggedUser ne null}">
+                        <ui:insert name="content">
+                        </ui:insert>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{webUserController.loggedUser eq null}">
+                        <ez:login/>
+                        <div style="width: 50%; margin: auto;">
+                            <ez:demo_login/>
+                        </div>
+                        <ui:insert name="timeout">
+                        </ui:insert>
+                    </h:panelGroup>
+                </div>
+
+            </ui:define>
+
+
+
+
+        </ui:composition>
+
+
+    </h:body>
+
+
+
+</html>

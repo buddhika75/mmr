@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./index.xhtml">
+
+            <ui:define name="insContents">
+
+
+                <h:form id="InstitutionCreateForm">
+
+                    <h:panelGroup id="display">
+                        <p:commandButton ajax="false" 
+                                         actionListener="#{institutionController.saveOrUpdateInstitution()}" 
+                                         value="Save" 
+                                         />
+
+
+
+
+                        <p:panelGrid columns="2">
+                            
+                            
+                            <p:outputLabel value="Name:" for="name" />
+                            <p:inputText id="name" value="#{institutionController.selected.name}" title="Name" />
+
+                           
+                            <p:outputLabel value="Code:" for="code" />
+                            <p:inputText id="code" value="#{institutionController.selected.code}" title="Code" />
+                            <p:outputLabel value="Parent:" for="parent" />
+                            <p:autoComplete  id="parent" value="#{institutionController.selected.parent}" 
+                                             completeMethod="#{institutionController.completeInstitutions}"
+                                             var="i" itemLabel="#{i.name}" itemValue="#{i}">
+                            </p:autoComplete >
+                       
+                            <p:outputLabel value="Address:" for="address" />
+                            <p:inputText id="address" value="#{institutionController.selected.address}" title="Address" />
+                            <p:outputLabel value="Fax:" for="fax" />
+                            <p:inputText id="fax" value="#{institutionController.selected.fax}" title="Fax" />
+                            <p:outputLabel value="Email:" for="email" />
+                            <p:inputText id="email" value="#{institutionController.selected.email}" title="Email" />
+                            <p:outputLabel value="Phone:" for="phone" />
+                            <p:inputText id="phone" value="#{institutionController.selected.phone}" title="Phone" />
+                            <p:outputLabel value="Mobile:" for="mobile" />
+                            <p:inputText id="mobile" value="#{institutionController.selected.mobile}" title="Mobile" />
+                            <p:outputLabel value="Web:" for="web" />
+                            <p:inputText id="web" value="#{institutionController.selected.web}" title="Web" />
+                        </p:panelGrid>
+
+
+
+
+
+                    </h:panelGroup>
+                </h:form>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

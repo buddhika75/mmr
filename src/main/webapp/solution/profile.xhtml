@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="/template.xhtml">
+
+            <ui:define name="content">
+
+                <h:panelGroup rendered="#{webUserController.loggedUser ne null}" >
+
+                    <h:form >
+                        <p:panelGrid columns="1" >
+                            <f:facet name="header" >
+                                <p:outputLabel value="Solution Profile" ></p:outputLabel>
+                            </f:facet>
+                            <p:panelGrid columns="4" >
+                                <p:commandButton ajax="false" value="To Edit"
+                                                 action="#{solutionController.toEditSolution()}"></p:commandButton>
+
+
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="3" >
+                                <p:graphicImage id="photo" value="#{solutionController.getSelectedImage()}" cache="FALSE">
+                                </p:graphicImage> 
+                                <p:graphicImage id="photoThumb" value="#{solutionController.getSelectedImageThumb()}" cache="FALSE">
+                                </p:graphicImage> 
+                                <p:graphicImage id="photoIcon" value="#{solutionController.getSelectedImageIcon()}" cache="FALSE">
+                                </p:graphicImage> 
+                            </p:panelGrid>
+
+
+                            <p:dataTable rendered="true" value="#{solutionController.selectedItemsDisplay}" var="i" >
+                                <p:column headerText="Property">
+                                    <h:outputLabel value="#{i.item.displayName}" ></h:outputLabel>
+                                </p:column>
+                                <p:column headerText="Value">
+                                    <h:outputLabel rendered="#{i.displayAsLabel}" value="#{i.valueAsStringDisplay}" >
+                                    </h:outputLabel>
+                                    <h:outputLink value="#{i.valueAsStringDisplay}"  rendered="#{i.displayAsLink}"
+                                                  target="_blank">
+                                        #{i.valueAsStringDisplay}
+                                    </h:outputLink>
+                                </p:column>
+                                <p:column headerText="Design" rendered="false">
+                                    <h:outputLabel  value="Label - #{i.displayAsLabel}" >
+                                    </h:outputLabel>
+                                    <br/>
+                                    <h:outputLabel   value="Link - #{i.displayAsLink}" >
+                                    </h:outputLabel>
+
+                                </p:column>
+                            </p:dataTable>
+
+
+                        </p:panelGrid>
+
+                    </h:form>
+
+                </h:panelGroup>
+
+                <h:panelGrid columns="2" >
+
+                    <p:outputLabel value="Created By"  />
+                    <h:panelGroup >
+                        <p:outputLabel value="#{solutionController.selected.createdBy.person.name}"  />
+                    </h:panelGroup>
+
+
+                    <p:outputLabel value="Created At"  />
+                    <h:panelGroup >
+                        <p:outputLabel value="#{solutionController.selected.createdAt}"  >
+                            <f:convertDateTime pattern="dd MMMM yyyy hh:mm a" ></f:convertDateTime>
+                        </p:outputLabel>
+                    </h:panelGroup>
+
+
+                    <p:outputLabel value="Last Edited By"  />
+                    <h:panelGroup>
+                        <p:outputLabel value="#{solutionController.selected.lastEditBy.person.name}"  />
+                    </h:panelGroup>
+
+
+                    <p:outputLabel value="Last Edited At"  />
+                    <h:panelGroup>
+                        <p:outputLabel value="#{solutionController.selected.createdAt}"  >
+                            <f:convertDateTime pattern="dd MMMM yyyy hh:mm a" ></f:convertDateTime>
+                        </p:outputLabel>
+                    </h:panelGroup>
+
+
+
+                </h:panelGrid>
+
+
+                <br/>
+                <br/>
+                <br/>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

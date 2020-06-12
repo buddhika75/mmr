@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+
+
+
+        <h:form>  
+
+            <h:outputStylesheet library="css" name="tem1.css"/>
+
+            <p:menubar  rendered="#{webUserController.loggedUser ne null}" 
+                        autoDisplay="true"  style="background-color: rgb(171, 212, 237)">
+
+
+                <p:menuitem ajax="false" value="Home" icon="ui-icon-home" action="#{webUserController.toHome()}" />
+                <p:submenu label="Solutions" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
+                    <p:menuitem ajax="false" value="Search" action="#{solutionController.toSearchClient()}" />
+                    <p:menuitem ajax="false" value="List" action="#{solutionController.toListAllSolutions()}" />
+                    <p:menuitem ajax="false" value="Create New" action="#{solutionController.toAddNewClient()}"  />
+                </p:submenu>
+                
+                <p:submenu label="Case Studies" rendered="#{webUserController.hasPrivilege('Client_Management')}" >
+                    <p:menuitem ajax="false" value="List" action="#{messageController.toViewCaseStudiesForUsers()}" />
+                    <p:menuitem ajax="false" value="Create New" action="#{messageController.toCreateNewCaseStudy()}"  />
+                </p:submenu>
+
+                <p:submenu label="Settings"  rendered="#{webUserController.hasPrivilege('User')}" >
+                    <p:menuitem value="Change My Password" action="#{webUserController.toChangeMyPassword()}"  />
+                    <p:menuitem value="Change My Details" action="#{webUserController.toChangeMyDetails()}"  />
+                </p:submenu>
+
+
+
+                <p:submenu label="System Administration"  rendered="#{webUserController.hasPrivilege('System_Administration')}"  >
+                    <p:menuitem value="Manage Users" action="/webUser/index"  />
+                    <p:menuitem value="Manage Metadata" action="/systemAdmin/index"  />
+                    <p:menuitem value="Manage Institutions" action="/institution/index"   />
+                    <p:menuitem value="Manage Images" action="/upload/index"   />
+                    
+                    <p:menuitem value="Manage Areas" action="/area/index" ajax="false"  />
+
+                </p:submenu>
+
+                <p:menuitem value="Front-end" action="/index" ajax="false"  />
+
+                <p:menuitem value="Logout" action="#{webUserController.logOut()}" ajax="false"  />
+
+
+            </p:menubar>
+
+
+
+        </h:form>
+
+    </cc:implementation>
+</html>

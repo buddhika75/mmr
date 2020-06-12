@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute  name="ii" type="cwcdh.pppp.entity.SiComponentItem" />
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <h:panelGroup id="gpDataAndButtons" >
+
+            item is - #{ii.item.name} .
+            #{ii.item.renderType eq 'Input_Text'}
+
+            <h:panelGroup id="gpData" >
+                <h:panelGroup rendered="#{ii.item.renderType eq 'Input_Text'}" >
+                    
+                    <h:panelGroup rendered="#{ii.item.selectionDataType eq'Short_Text'}" >
+
+                        <p:inputText id="itStC" value="#{ii.shortTextValue}" 
+                                     required="#{ii.required}" 
+                                     requiredMessage="#{ii.requiredErrorMessage}" >
+                        </p:inputText>
+
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{ii.item.selectionDataType eq 'Integer_Number'}" >
+                        <p:inputText id="itIntC" value="#{ii.integerNumberValue}" 
+                                     required="#{ii.required}" 
+                                     requiredMessage="#{ii.requiredErrorMessage}" >
+                        </p:inputText>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{ii.item.selectionDataType eq 'Real_Number'}" >
+                        <p:inputText id="itRnC" value="#{ii.realNumberValue}" 
+                                     required="#{ii.required}" validatorMessage="#{ii.regexValidationFailedMessage}"
+                                     requiredMessage="#{ii.requiredErrorMessage}" >
+                        </p:inputText>
+
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{ii.item.selectionDataType eq 'Long_Number'}" >
+                        <td>
+                            <p:outputLabel  value="#{ii.name}" ></p:outputLabel>
+                        </td>
+                        <td>
+                            <p:outputLabel id="itLongC" value="#{ii.longNumberValue}" >
+                            </p:outputLabel>
+                        </td>
+                    </h:panelGroup>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{ii.item.renderType eq 'Input_Text_Area'}" >
+                    <p:inputTextarea id="txtItaL" value="#{ii.longTextValue}" 
+                                     required="#{ii.required}" 
+                                     requiredMessage="#{ii.requiredErrorMessage}" >
+                        <p:ajax  event="blur" process="@this"   listener="#{siComponentItemController.save(ii)}" ></p:ajax>
+                    </p:inputTextarea>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{ii.item.selectionDataType eq 'DateTime'}" >
+                    <h:panelGroup rendered="#{ii.renderType eq 'Date_Picker'}" >
+                        <td>
+                            <p:outputLabel  value="#{ii.name}" ></p:outputLabel>
+                        </td>
+                        <td>
+                            <p:outputLabel  value="#{ii.dateValue}" >
+                                <f:convertDateTime  pattern="dd MMMM yyyy"></f:convertDateTime>
+                                <p:ajax  event="blur" process="@this" listener="#{siComponentItemController.save(ii)}" ></p:ajax>
+                            </p:outputLabel>
+                        </td>
+
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{ii.item.renderType eq 'Calendar'}" >
+                        <td>
+                            <p:outputLabel value="#{ii.name}" ></p:outputLabel>
+                        </td>
+                        <td>
+                            <p:outputLabel  value="#{ii.dateValue}" >
+                                <f:convertDateTime  pattern="dd MMMM yyyy"></f:convertDateTime>
+                                <p:ajax  event="blur" process="@this" listener="#{siComponentItemController.save(ii)}" ></p:ajax>
+                            </p:outputLabel>
+                        </td>
+
+                    </h:panelGroup>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{ii.item.selectionDataType eq 'Item_Reference'}" >
+                    <h:panelGroup rendered="#{ii.renderType eq 'Drop_Down_Menu'}" >
+                        <td>
+                            <p:outputLabel  value="#{ii.name}" ></p:outputLabel>
+                        </td>
+                        <td>
+                            <p:outputLabel  value="#{ii.itemValue.name}" >
+                            </p:outputLabel>
+                        </td>
+                    </h:panelGroup>
+                    <h:panelGroup rendered="#{ii.item.renderType eq 'Autocomplete'}" >
+                        <td>
+                            <p:outputLabel  value="#{ii.name}" ></p:outputLabel>
+                        </td>
+                        <td>
+                            <p:outputLabel  value="#{ii.itemValue.name}" >
+                            </p:outputLabel>
+                        </td>
+
+                    </h:panelGroup>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{ii.item.renderType eq 'Boolean_Checkbox'}" >
+                    <td>
+                        <p:outputLabel  value="#{ii.name}" ></p:outputLabel>
+                    </td>
+                    <td>
+                        <p:outputLabel  value="#{ii.booleanValue?'Yes':'No'}" ></p:outputLabel>
+                    </td>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{ii.item.renderType eq 'Autocomplete' and ii.item.selectionDataType eq 'Area_Reference'}" >
+                    <td>
+                        <p:outputLabel  value="#{ii.name}" ></p:outputLabel>
+                    </td>
+                    <td>
+                        <p:outputLabel  value="#{ii.areaValue.name}" ></p:outputLabel>
+                    </td>
+
+                </h:panelGroup>
+
+
+            </h:panelGroup>
+
+
+        </h:panelGroup>
+
+
+
+
+    </cc:implementation>
+</html>

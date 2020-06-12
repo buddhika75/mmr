@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="/template.xhtml">
+
+            <ui:define name="content">
+
+
+
+                <h:form >
+                    <div class="w3-pale-blue w3-container" >
+                        <div class="w3-large w3-center w3-opacity" >
+                            <h2>
+                                <h:outputLabel value="#{solutionController.selected.name}" ></h:outputLabel>
+                            </h2>  
+                        </div>
+                    </div>
+
+                    <div class="w3-container w3-padding" >
+                        <h:dataTable rendered="true" 
+                                     class="w3-table w3-striped w3-bordered w3-table-all w3-center w3-card-4"
+                                     value="#{solutionController.selectedItemsDisplay}" var="i" >
+                            <h:column >
+                                <p:outputLabel value="#{i.item.name}" ></p:outputLabel>
+                            </h:column>
+                            <h:column >
+                                <p:outputLabel value="#{i.valueAsStringDisplay}" rendered="#{i.displayAsLabel}" ></p:outputLabel>
+                                <h:outputLink value="#{i.valueAsStringDisplay}"  rendered="#{i.displayAsLink}"
+                                              target="_blank">
+                                    #{i.valueAsStringDisplay}
+                                </h:outputLink>
+                            </h:column>
+                        </h:dataTable>
+                    </div>
+
+                    <div class="w3-container w3-padding" >
+                        <p:graphicImage id="photo" value="#{solutionController.getSelectedImage()}" cache="FALSE">
+                        </p:graphicImage> 
+                    </div>
+
+                    <div class="w3-container" >
+                        <div class="w3-right-align" >
+                            <h:commandButton value="Back to Search"  action="#{solutionController.toSearchPublic()}" >
+                            </h:commandButton>
+                        </div>
+                    </div>
+
+
+
+                </h:form>
+
+
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

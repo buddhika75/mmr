@@ -1,0 +1,247 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <body>
+
+        <ui:composition template="/template.xhtml">
+
+            <ui:define name="content">
+
+
+                <p:panel style="text-align: center;height: 100%;" rendered="#{webUserController.loggedUser eq null}" >
+                    <p>Please login to edit</p>
+                </p:panel>
+
+                <p:panel style="text-align: center;height: 100%;" rendered="#{webUserController.loggedUser ne null}" >
+                    <f:facet name="header" >
+                        <p:outputLabel value="Add Solution Details" rendered="#{solutionController.selected.id eq null}"></p:outputLabel>
+                        <p:outputLabel value="Edit Solution Details" rendered="#{solutionController.selected.id ne null}"></p:outputLabel>
+                    </f:facet>
+
+                    <p:panelGrid columns="2" styleClass="alignTop" >
+                        <h:form>
+
+                            <p:panelGrid columns="3" style="text-align: left;margin: auto; width: 100%;">
+                                <f:facet name="header" >
+                                    <p:commandButton ajax="false" action="#{solutionController.saveSolution()}" value="Save" ></p:commandButton>
+                                    <p:commandButton ajax="false" action="#{solutionController.retireSelected()}" value="Remove" immediate="true" ></p:commandButton>
+
+                                </f:facet>
+
+                                <p:outputLabel value="Name:" for="name" />
+                                <p:inputText autocomplete="off" id="name" required="true" value="#{solutionController.selected.name}" title="Name" >
+                                    <f:ajax event="blur" execute="@this" listener="#{solutionController.saveSolution()}" ></f:ajax>
+                                </p:inputText>
+                                <p:spacer ></p:spacer>
+
+
+
+
+                                <p:outputLabel value="Short Name:" for="sname" />
+                                <p:inputText autocomplete="off" id="sname" required="true" value="#{solutionController.selected.sname}" title="Name" >
+                                    <f:ajax event="blur" execute="@this" listener="#{solutionController.saveSolution()}" ></f:ajax>
+                                </p:inputText>
+                                <p:spacer ></p:spacer>
+
+
+                                <p:outputLabel value="Featured:" for="fea" />
+                                <p:selectBooleanButton id="fea" onLabel="Yes" offLabel="No" value="#{solutionController.selected.featured}" title="Name" >
+                                </p:selectBooleanButton>
+                                <p:spacer ></p:spacer>
+
+
+
+                                <p:selectOneMenu  value="#{solutionController.item}" >
+                                    <f:selectItem itemLabel="Select" ></f:selectItem>
+                                    <f:selectItems value="#{solutionController.findItemsByCodeOrderByDisplay('solution_data')}" var="i" itemLabel="#{i.displayName}"
+                                                   itemValue="#{i}" ></f:selectItems>
+                                    <p:ajax event="change" process="@this" update="propertyDetails" listener="#{solutionController.itemChanged}" ></p:ajax>
+                                    <p:ajax event="change" process="@this" update="propertyDetails" listener="#{solutionController.itemChanged}" ></p:ajax>
+                                </p:selectOneMenu>
+
+<!--                                <p:autoComplete value="#{solutionController.item}"
+                                                completeMethod="#{itemController.completeSolutionData}"
+                                                var="i" id="property"
+                                                itemLabel="#{i.name}"
+                                                itemValue="#{i}"
+                                                placeholder="Property">
+                                    <p:ajax event="itemSelect" process="@this" update="propertyDetails" listener="#{solutionController.itemChanged}" ></p:ajax>
+                                </p:autoComplete>-->
+                                <h:panelGroup >
+                                    <h:panelGroup id="propertyDetails" >
+                                        <h:panelGroup id="gpData" >
+                                            <h:panelGroup rendered="#{solutionController.siComponentItem.item.renderType eq 'Link'}" >
+                                                <h:panelGroup rendered="#{solutionController.siComponentItem.item.dataTypeShortText}" >
+                                                    <p:inputText id="itLink" value="#{solutionController.siComponentItem.shortTextValue}">
+                                                    </p:inputText>
+                                                </h:panelGroup>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{solutionController.siComponentItem.item.renderType eq 'Input_Text'}" >
+                                                <h:panelGroup rendered="#{solutionController.siComponentItem.item.dataTypeShortText}" >
+                                                    <p:inputText id="itStC" value="#{solutionController.siComponentItem.shortTextValue}">
+                                                    </p:inputText>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{solutionController.siComponentItem.item.dataTypeInteger}" >
+                                                    <p:inputText id="itIntC" value="#{solutionController.siComponentItem.integerNumberValue}" >
+                                                    </p:inputText>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{solutionController.siComponentItem.item.dataTypeReal}" >
+                                                    <p:inputText id="itRnC" value="#{solutionController.siComponentItem.realNumberValue}">
+                                                    </p:inputText>
+                                                </h:panelGroup>
+                                                <h:panelGroup rendered="#{solutionController.siComponentItem.item.dataTypeLong}" >
+                                                    <p:inputText id="itLongC" value="#{solutionController.siComponentItem.longNumberValue}" >
+                                                    </p:inputText>
+                                                </h:panelGroup>
+                                            </h:panelGroup>
+                                            <h:panelGroup rendered="#{solutionController.siComponentItem.item.renderType eq 'Input_Text_Area'}" >
+                                                <h:inputTextarea id="txtItaL" value="#{solutionController.siComponentItem.longTextValue}"  >
+                                                </h:inputTextarea>
+                                            </h:panelGroup>
+
+                                            <h:panelGroup rendered="#{solutionController.siComponentItem.item.dataTypeItem}" >
+
+                                                <h:panelGroup rendered="#{solutionController.siComponentItem.item.renderType eq 'Autocomplete'}" >
+                                                    <p:autoComplete id="acItem" value="#{solutionController.siComponentItem.itemValue}"
+                                                                    completeMethod="#{itemController.completeItemsofParentWithFIlter}"
+                                                                    var="ai" itemLabel="#{ai.name}" itemValue="#{ai}"
+                                                                    maxResults="15" forceSelection="true" 
+                                                                    minQueryLength="3"
+                                                                    >
+                                                        <f:attribute name="filter" value="#{solutionController.siComponentItem.item.categoryOfAvailableItems.code}" />
+                                                    </p:autoComplete>
+                                                </h:panelGroup>
+
+                                                <h:panelGroup rendered="#{solutionController.siComponentItem.item.renderType eq 'Drop_Down_Menu'}" >
+                                                    <p:selectOneMenu id="domIc" value="#{solutionController.siComponentItem.itemValue}" >
+                                                        <f:selectItem itemLabel="Please select" ></f:selectItem>
+                                                        <f:selectItems value="#{itemController.findItemList(solutionController.siComponentItem.item.categoryOfAvailableItems)}" var="li"
+                                                                       itemLabel="#{li.displayName}" itemValue="#{li}" ></f:selectItems>
+                                                    </p:selectOneMenu>
+                                                </h:panelGroup>
+
+                                            </h:panelGroup>
+
+                                            <h:panelGroup rendered="#{solutionController.siComponentItem.item.dataTypeInstitution}" >
+
+                                                <h:panelGroup rendered="#{solutionController.siComponentItem.item.renderType eq 'Autocomplete'}" >
+                                                    <p:autoComplete id="acIns" value="#{solutionController.siComponentItem.institutionValue}"
+                                                                    completeMethod="#{institutionController.completeInstitutions}"
+                                                                    var="ins" itemLabel="#{ins.name}" itemValue="#{ins}"
+                                                                    maxResults="15" forceSelection="true" 
+                                                                    minQueryLength="3"
+                                                                    >
+                                                    </p:autoComplete>
+                                                </h:panelGroup>
+
+                                            </h:panelGroup>
+
+
+                                        </h:panelGroup>
+
+
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                                <p:commandButton ajax="false" value="Add" action="#{solutionController.addNewProperty()}" >
+                                </p:commandButton>
+
+                            </p:panelGrid>
+
+
+                            <p:dataTable rendered="true" value="#{solutionController.selectedItems}" var="i"
+                                         rowKey="#{i.id}"
+                                         rowIndexVar="n"
+                                         id="tbl"
+                                         >
+                                <p:column headerText="Order No" style="width: 3rem;">
+                                    <p:inputText value="#{i.orderNo}" >
+                                        <f:ajax event="blur" execute="@this" render="@all" listener="#{solutionController.saveAllImports()}" ></f:ajax>
+                                    </p:inputText>
+                                </p:column>
+                                <p:column headerText="Property" style="text-align: left; width: 20rem;">
+                                    <p:outputLabel value="#{i.item.displayName}" ></p:outputLabel>
+                                </p:column>
+                                <p:column headerText="Value"  style="text-align: left;">
+                                    <p:outputLabel value="#{i.valueAsString}" ></p:outputLabel>
+                                </p:column>
+
+                                <p:column headerText="Actions"  style="width: 18rem;">
+                                    <p:commandButton ajax="false" value="Remove" action="#{solutionController.retireSelectedSiItem()}" >
+                                        <f:setPropertyActionListener value="#{i}" target="#{solutionController.siComponentItem}" ></f:setPropertyActionListener>
+                                    </p:commandButton>
+
+                                    <p:commandButton ajax="false" value="Up" action="#{solutionController.moveSiItemUp()}" >
+                                        <f:setPropertyActionListener value="#{i}" target="#{solutionController.siComponentItem}" ></f:setPropertyActionListener>
+                                    </p:commandButton>
+
+                                    <p:commandButton ajax="false" value="Down" action="#{solutionController.moveSiItemDown()}" >
+                                        <f:setPropertyActionListener value="#{i}" target="#{solutionController.siComponentItem}" ></f:setPropertyActionListener>
+                                    </p:commandButton>
+
+
+
+                                </p:column>
+
+                            </p:dataTable>
+
+
+
+                        </h:form>
+
+                        <h:panelGrid columns="1">
+                            <p:panel header="Image width 640" >
+                                <h:form enctype="multipart/form-data">        
+                                    <p:fileUpload value="#{solutionController.file}" mode="simple" skinSimple="true"/>
+                                    <br />
+                                    <p:commandButton value="Submit" ajax="false" action="#{solutionController.saveImage()}"  />
+                                </h:form>
+                            </p:panel>
+                            <p:panel header="Thumb 150x150" >
+                                <h:form enctype="multipart/form-data">        
+                                    <p:fileUpload value="#{solutionController.file}" mode="simple" skinSimple="true"/>
+                                    <br />
+                                    <p:commandButton value="Submit" ajax="false" action="#{solutionController.saveThumb()}"  />
+                                </h:form>
+                            </p:panel>
+                            <p:panel header="Icon 50x50" >
+                                <h:form enctype="multipart/form-data">        
+                                    <p:fileUpload value="#{solutionController.file}" mode="simple" skinSimple="true"/>
+                                    <br />
+                                    <p:commandButton value="Submit" ajax="false" action="#{solutionController.saveIcon()}"  />
+                                </h:form>
+                            </p:panel>
+                        </h:panelGrid>
+
+                    </p:panelGrid>
+
+
+
+
+
+
+
+
+
+
+                </p:panel>
+
+
+
+                <br/>
+                <br/>
+                <br/>
+
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

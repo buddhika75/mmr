@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Patient Update</title>
+        <meta charset="utf-8"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"></link>
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"></link>-->
+        <!--<link rel="stylesheet" href="../css/bootstrap.min.css"/>-->
+
+
+        <f:metadata >
+            <f:viewParam name="username" value="#{messageController.username}" ></f:viewParam>
+            <f:viewParam name="password" value="#{messageController.password}" ></f:viewParam>
+            <f:viewParam name="ptId" value="#{messageController.ptId}" ></f:viewParam>
+            <f:viewParam name="recipient"  value="#{messageController.recipient}" ></f:viewParam>
+            <f:viewAction action="#{messageController.prepareForRecordUpdate()}" ></f:viewAction>
+        </f:metadata>
+
+    </h:head>
+    <h:body style="overflow: hidden;">
+
+        <h:panelGroup rendered="#{!messageController.hasAccess}" >
+            <div class="row p-12" >
+                <div class="col-md-12 p-12"  >
+                    <div class="card ">
+                        <div class="card-header">
+                            Record Update
+                        </div>
+                        <h:form  >
+                            <div class="card-body">
+                                <div class="row" >
+                                    <div class="col-md-12"  >
+                                        You have no access.#{messageController.errorMessage}
+                                    </div>
+                                </div>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </h:panelGroup>
+
+
+        <h:panelGroup rendered="#{messageController.hasAccess}" >
+
+            <h:panelGroup rendered="#{!messageController.completed}" >
+                <div class="row p-12" >
+                    <div class="col-md-12 p-12"  >
+                        <div class="card ">
+                            <div class="card-header">
+                                Record Update
+                            </div>
+                            <h:form  >
+                                <div class="card-body">
+                                    <div class="row" >
+                                        <div class="col-md-6"  >
+                                            Please select the issue with your account
+                                        </div>
+                                        <div class="col-md-6"  >
+                                            <h:selectOneMenu  value="#{messageController.selected.item}" class="custom-select mb-3" >
+                                                <f:selectItem itemLabel="Select" ></f:selectItem>
+                                                <f:selectItems value="#{solutionController.findItemsByCodeOrderByDisplay('record_update_types')}" var="i" itemLabel="#{i.displayName}"
+                                                               itemValue="#{i}" ></f:selectItems>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    <div class="row" >
+                                        <div class="col-md-12"  >  
+                                            <h:outputLabel value="Please tell us about the issue" >
+                                            </h:outputLabel>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <h:inputTextarea  value="#{messageController.selected.message}" a:placeholder="Type here" class="form-control" rows="5"  >
+                                            </h:inputTextarea>
+                                        </div>
+                                    </div>
+                                    <div class="row" >
+                                        <div class="col-md-12">
+                                            <h:commandButton value="Submit" 
+                                                             action="#{messageController.saveSelectedAndEmail()}"
+                                                             class="btn btn-primary my-4 float-right px-5" >
+                                            </h:commandButton>
+                                        </div>
+                                    </div>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </h:panelGroup>
+
+
+            <h:panelGroup rendered="#{messageController.completed}" >
+
+                <h:panelGroup rendered="#{messageController.sentSuccessfully}" >
+                    <div class="row p-12" >
+                        <div class="col-md-12 p-12"  >
+                            <div class="card ">
+                                <div class="card-header">
+                                    Record Update
+                                </div>
+                                <h:form  >
+                                    <div class="card-body">
+                                        <div class="row" >
+                                            <div class="col-md-12"  >
+                                                Sent Successfully.
+                                            </div>
+                                        </div>
+                                        <div class="row" >
+                                            <div class="col-md-12"  >
+                                                <h:commandButton value="Submit Again." 
+                                                                 action="#{messageController.reverseComplete()}"
+                                                                 class="btn btn-primary my-4 float-right px-5" >
+                                                </h:commandButton>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </h:panelGroup>
+
+                   <h:panelGroup rendered="#{!messageController.sentSuccessfully}" >
+                    <div class="row p-12" >
+                        <div class="col-md-12 p-12"  >
+                            <div class="card ">
+                                <div class="card-header">
+                                    Record Update
+                                </div>
+                                <h:form  >
+                                    <div class="card-body">
+                                        <div class="row" >
+                                            <div class="col-md-12"  >
+                                                Sent Failed. #{messageController.errorMessage}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </h:panelGroup>
+
+            </h:panelGroup>
+
+
+        </h:panelGroup>
+
+
+
+    </h:body>
+</html>
+
